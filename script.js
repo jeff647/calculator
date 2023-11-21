@@ -31,16 +31,15 @@ function deleteEventListener(nodeListObject, event, eventFunction) {
 
 // DIGIT INPUT STATE
 function displayDigits(event) {
-  inputDisplay.textContent += this.textContent;
   if (inputDisplay.textContent.length >= displayLengthLimit) {
     // Disable digit buttons so user cannot exceed the display limit
     deleteEventListener(digitButtons, "click", displayDigits);
   }
+  inputDisplay.textContent += this.textContent;
   applyEventListener(operatorButtons, "click", displayOperator);
 }
 
 // OPERATOR INPUT STATE
-
 function displayOperator(event) {
   // Save currently displayed value to firstNumber variable
   firstNumber = inputDisplay.textContent;
@@ -50,17 +49,36 @@ function displayOperator(event) {
   resultDisplay.textContent += `${firstNumber} ${operator} `;
   deleteEventListener(operatorButtons, "click", displayOperator);
   applyEventListener(digitButtons, "click", displayDigits);
+  equalButton.addEventListener("click", displayEqual);
 }
 
 // EQUAL INPUT STATE
-
-equalButton.addEventListener("click", () => {
+function displayEqual(event) {
   secondNumber = inputDisplay.textContent;
-  clearInputDisplay();
-  let result = operate(operator, parseInt(firstNumber), parseInt(secondNumber));
-  resultDisplay.textContent += `${secondNumber} = ${result}`;
-  inputDisplay.textContent = result;
-});
+  // If user press = before entering a digit produce error and clear
+  if (secondNumber == "") {
+    resultDisplay.textContent += `= ERROR`;
+    // Clear after 2 seconds
+    setTimeout(defaultState, 1500);
+  } else if (secondNumber == 0 && operator == "/") {
+    resultDisplay.textContent += `${secondNumber} = CANNOT DIVIDE BY 0`;
+    // Clear after 2 seconds
+    setTimeout(defaultState, 1500);
+  } else {
+    clearInputDisplay();
+    console.log(
+      operate(operator, parseInt(firstNumber), parseInt(secondNumber))
+    );
+    let result = parseFloat(
+      operate(operator, parseInt(firstNumber), parseInt(secondNumber)).toFixed(
+        4
+      )
+    );
+    resultDisplay.textContent += `${secondNumber} = ${result}`;
+    inputDisplay.textContent = result;
+    equalButton.removeEventListener("click", displayEqual);
+  }
+}
 
 function add(number1, number2) {
   return number1 + number2;
@@ -100,18 +118,18 @@ function clearInputDisplay() {
   inputDisplay.textContent = "";
 }
 
-// Keyboard Input Support
-document.body.addEventListener("keydown", keyboardTest);
+// // Keyboard Input Support
+// document.body.addEventListener("keydown", keyboardTest);
 
-function keyboardTest(event){
-  let key = event.key;
-  inputDisplay.textContent += key;
-  if (key == "+"){
-    // Save currently displayed value to firstNumber variable
-  firstNumber = inputDisplay.textContent;
-  // Save pressed button textContent to operator variable
-  operator = "+";
-  clearAllDisplay();
-  resultDisplay.textContent += `${firstNumber} ${operator} `;
-  }
-}
+// function keyboardTest(event) {
+//   let key = event.key;
+//   inputDisplay.textContent += key;
+//   if (key == "+") {
+//     // Save currently displayed value to firstNumber variable
+//     firstNumber = inputDisplay.textContent;
+//     // Save pressed button textContent to operator variable
+//     operator = "+";
+//     clearAllDisplay();
+//     resultDisplay.textContent += `${firstNumber} ${operator} `;
+//   }
+// }
