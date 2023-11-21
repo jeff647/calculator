@@ -1,26 +1,58 @@
-let firstNumber, operator, secondNumber, displayValue, inputValue;
+let firstNumber = (operator = secondNumber = displayValue = inputValue = null);
+let displayLengthLimit = 5;
 const resultDisplay = document.querySelector(".result-display");
 const inputDisplay = document.querySelector(".input-display");
 const digitButtons = document.querySelectorAll(".digits");
 const operatorButtons = document.querySelectorAll(".operator");
 const equalButton = document.querySelector(".equal");
 
-digitButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    inputDisplay.textContent += button.textContent;
-  });
-});
+// DEFAULT STATE
+defaultState();
 
-operatorButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    // Save currently displayed value to firstNumber variable
-    firstNumber = inputDisplay.textContent;
-    // Save pressed button textContent to operator variable
-    operator = button.textContent;
-    clearAllDisplay();
-    resultDisplay.textContent += `${firstNumber} ${operator} `;
+// function for resetting states
+function defaultState() {
+  firstNumber = secondNumber = operator = null;
+  clearAllDisplay();
+  applyEventListener(digitButtons, "click", displayDigits);
+  // applyEventListener(operatorButtons, "click", displayOperator);
+}
+
+function applyEventListener(nodeListObject, event, eventFunction) {
+  nodeListObject.forEach((node) => {
+    node.addEventListener(event, eventFunction);
   });
-});
+}
+
+function deleteEventListener(nodeListObject, event, eventFunction) {
+  nodeListObject.forEach((node) => {
+    node.removeEventListener(event, eventFunction);
+  });
+}
+
+// DIGIT INPUT STATE
+function displayDigits(event) {
+  inputDisplay.textContent += this.textContent;
+  if (inputDisplay.textContent.length >= displayLengthLimit) {
+    // Disable digit buttons so user cannot exceed the display limit
+    deleteEventListener(digitButtons, "click", displayDigits);
+  }
+  applyEventListener(operatorButtons, "click", displayOperator);
+}
+
+// OPERATOR INPUT STATE
+
+function displayOperator(event) {
+  // Save currently displayed value to firstNumber variable
+  firstNumber = inputDisplay.textContent;
+  // Save pressed button textContent to operator variable
+  operator = this.textContent;
+  clearAllDisplay();
+  resultDisplay.textContent += `${firstNumber} ${operator} `;
+  deleteEventListener(operatorButtons, "click", displayOperator);
+  applyEventListener(digitButtons, "click", displayDigits);
+}
+
+// EQUAL INPUT STATE
 
 equalButton.addEventListener("click", () => {
   secondNumber = inputDisplay.textContent;
@@ -47,9 +79,6 @@ function divide(number1, number2) {
 }
 
 function operate(operation, number1, number2) {
-  console.log(
-    `Number1 value: ${number1} type: ${typeof number1}, ${operation} Number2 value: ${number2} type: ${typeof number2}`
-  );
   switch (operation) {
     case "+":
       return add(number1, number2);
@@ -69,4 +98,20 @@ function clearAllDisplay() {
 
 function clearInputDisplay() {
   inputDisplay.textContent = "";
+}
+
+// Keyboard Input Support
+document.body.addEventListener("keydown", keyboardTest);
+
+function keyboardTest(event){
+  let key = event.key;
+  inputDisplay.textContent += key;
+  if (key == "+"){
+    // Save currently displayed value to firstNumber variable
+  firstNumber = inputDisplay.textContent;
+  // Save pressed button textContent to operator variable
+  operator = "+";
+  clearAllDisplay();
+  resultDisplay.textContent += `${firstNumber} ${operator} `;
+  }
 }
