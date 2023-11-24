@@ -1,3 +1,5 @@
+let test = "I am branch state-version";
+
 let firstNumber = (operator = secondNumber = displayValue = inputValue = null);
 let displayLengthLimit = 5;
 const resultDisplay = document.querySelector(".result-display");
