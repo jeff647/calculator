@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Calculator</title>
+    <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" async></script>
   </head>
@@ -13,26 +14,26 @@
       <!-- 2nd row full block input display -->
       <div class="input-display"></div>
       <!-- 3rd row 4 columns -->
-      <div class="clear bold interact" onclick="defaultState()">Clear</div>
-      <div class="divide bolder interact operator">/</div>
-      <div class="multiply bold interact operator">*</div>
-      <div class="subtract bolder interact operator">-</div>
+      <button class="clear bold interact" onclick="defaultState()">Clear</button>
+      <button class="divide bolder interact operator">/</button>
+      <button class="multiply bold interact operator">*</button>
+      <button class="subtract bolder interact operator">-</button>
       <!-- 4th row 4 columns -->
-      <div class="digits interact">8</div>
-      <div class="digits interact">7</div>
-      <div class="digits interact">9</div>
+      <button class="digits interact">8</button>
+      <button class="digits interact">7</button>
+      <button class="digits interact">9</button>
       <!-- Add spans 2rows -->
-      <div class="add bolder interact operator">+</div>
-      <div class="digits interact">4</div>
-      <div class="digits interact">5</div>
-      <div class="digits interact">6</div>
-      <div class="digits interact">1</div>
-      <div class="digits interact">2</div>
-      <div class="digits interact">3</div>
+      <button class="add bolder interact operator">+</button>
+      <button class="digits interact">4</button>
+      <button class="digits interact">5</button>
+      <button class="digits interact">6</button>
+      <button class="digits interact">1</button>
+      <button class="digits interact">2</button>
+      <button class="digits interact">3</button>
       <!-- = spans 2 rows -->
-      <div class="equal bolder interact">=</div>
-      <div class="digits zero interact">0</div>
-      <div class="decimal bold interact">.</div>
+      <button class="equal bolder interact">=</button>
+      <button class="digits zero interact">0</button>
+      <button class="decimal bold interact">.</button>
     </div>
   </body>
 </html>
